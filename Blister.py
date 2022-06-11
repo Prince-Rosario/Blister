@@ -836,7 +836,3 @@ while run:
     pygame.display.update()
 
 pygame.quit()
-
-
-
-#have fun xD
