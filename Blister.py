@@ -1,7 +1,7 @@
 from cgitb import text
 from turtle import width
 import pygame
-from pygame import mixer
+from pygame import MOUSEBUTTONDOWN, mixer
 import os
 import random
 import csv
@@ -17,8 +17,9 @@ __version__     = "1.0"
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
 
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 pygame.display.set_caption('Blister')
+
 
 #set framerate
 clock = pygame.time.Clock()
@@ -34,7 +35,7 @@ TILE_TYPES = 21
 MAX_LEVELS = 3
 screen_scroll = 0
 bg_scroll = 0
-level = 1
+level = 3
 start_game = False
 start_intro = False
 
@@ -59,8 +60,8 @@ grenade_fx = pygame.mixer.Sound('files/audio/grenade.wav')
 grenade_fx.set_volume(0.1)
 
 #background music
-mixer.music.load('files/audio/background.mp3')
-mixer.music.set_volume(0.25)
+mixer.music.load('files/audio/background1.mp3')
+mixer.music.set_volume(0.20)
 mixer.music.play(-1)
 
 
@@ -70,14 +71,14 @@ start_img = pygame.image.load('files/img/start_btn.png').convert_alpha()
 exit_img = pygame.image.load('files/img/exit_btn.png').convert_alpha()
 restart_img = pygame.image.load('files/img/restart_btn.png').convert_alpha()
 #background
-pine1_img = pygame.image.load('files/img/Background/pine1.png').convert_alpha()
-pine2_img = pygame.image.load('files/img/Background/pine2.png').convert_alpha()
-mountain_img = pygame.image.load('files/img/Background/mountain.png').convert_alpha()
-sky_img = pygame.image.load('files/img/Background/sky_cloud.png').convert_alpha()
+pine1_img = pygame.image.load('files/img/background/pine1.png').convert_alpha()
+pine2_img = pygame.image.load('files/img/background/pine2.png').convert_alpha()
+mountain_img = pygame.image.load('files/img/background/mountain.png').convert_alpha()
+sky_img = pygame.image.load('files/img/background/sky_cloud.png').convert_alpha()
 #store tiles in a list
 img_list = []
 for x in range(TILE_TYPES):
-    img = pygame.image.load(f'files/img/Tile/{x}.png')
+    img = pygame.image.load(f'files/img/tile/{x}.png')
     img = pygame.transform.scale(img, (TILE_SIZE, TILE_SIZE))
     img_list.append(img)
 #bullet
@@ -517,10 +518,13 @@ class Bullet(pygame.sprite.Sprite):
                 self.kill()
 
         #check collision with characters
+        #bullet damage for player
         if pygame.sprite.spritecollide(player, bullet_group, False):
             if player.alive:
-                player.health -= 15
+                player.health -= 8
                 self.kill()
+
+        #bullet damage for enemy                
         for enemy in enemy_group:
             if pygame.sprite.spritecollide(enemy, bullet_group, False):
                 if enemy.alive:
@@ -780,7 +784,9 @@ while run:
                             for y, tile in enumerate(row):
                                 world_data[x][y] = int(tile)
                     world = World()
-                    player, health_bar = world.process_data(world_data) 
+                    player, health_bar = world.process_data(world_data)   
+
+                         
         else:
             screen_scroll = 0
             if death_fade.fade():
@@ -810,7 +816,7 @@ while run:
             if event.key == pygame.K_d:
                 moving_right = True
             if event.key == pygame.K_SPACE:
-                shoot = True
+                shoot = True 
             if event.key == pygame.K_g:
                 grenade = True
             if event.key == pygame.K_w and player.alive:
@@ -832,7 +838,9 @@ while run:
                 grenade = False
                 grenade_thrown = False
 
-
+    if level > MAX_LEVELS:
+        break
+    
     pygame.display.update()
 
 pygame.quit()
