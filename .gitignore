@@ -6,3 +6,4 @@
 !.vscode/*.code-snippets
 
 .__pycache__/*
+!.__pycache__/button.cpython-310.pyc
