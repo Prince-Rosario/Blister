@@ -1,5 +1,4 @@
 # Blister 
-@Author - Prince Rosario
 
 
 
