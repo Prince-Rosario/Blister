@@ -898,7 +898,7 @@ while run:
     for event in pygame.event.get():
         # quit game
         if event.type == pygame.QUIT:
-            run = False
+            run = False 
         # Joystick
         if event.type == pygame.JOYBUTTONDOWN:
             if event.button == 0 and player.alive:
