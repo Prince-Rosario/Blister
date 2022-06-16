@@ -1,7 +1,17 @@
 from cgitb import text
+from shutil import move
 from turtle import width
+from unittest import TestResult
+from numpy import apply_along_axis
 import pygame
-from pygame import MOUSEBUTTONDOWN, mixer
+from pygame import (
+    JOYAXISMOTION,
+    JOYBUTTONDOWN,
+    JOYBUTTONUP,
+    JOYHATMOTION,
+    MOUSEBUTTONDOWN,
+    mixer,
+)
 import os
 import random
 import csv
@@ -11,7 +21,7 @@ mixer.init()
 pygame.init()
 
 
-__author__ = "PrinceRosario"
+__author__ = "Prince Rosario"
 __email__ = "princerosario2003@gmail.com"
 __version__ = "1.0"
 
@@ -65,6 +75,8 @@ mixer.music.load("files/audio/background1.mp3")
 mixer.music.set_volume(0.20)
 mixer.music.play(-1)
 
+# icon
+# icon_img = pygame.image.load("files/img/")
 
 # load images
 # button images
@@ -72,6 +84,7 @@ start_img = pygame.image.load("files/img/start_btn.png").convert_alpha()
 exit_img = pygame.image.load("files/img/exit_btn.png").convert_alpha()
 restart_img = pygame.image.load("files/img/restart_btn.png").convert_alpha()
 
+xbox_img =pygame.image.load("files/img/promt/gdb-xbox-2.png").convert_alpha()
 # background
 pine1_img = pygame.image.load("files/img/background/pine1.png").convert_alpha()
 pine2_img = pygame.image.load("files/img/background/pine2.png").convert_alpha()
@@ -103,7 +116,7 @@ item_boxes = {
 
 
 # define colours
-BG = (144, 201, 120)
+BG = (173, 216, 230)
 RED = (255, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
@@ -111,7 +124,7 @@ BLACK = (0, 0, 0)
 PINK = (235, 65, 54)
 
 # define font
-font = pygame.font.SysFont("Futura", 30)
+font = pygame.font.SysFont("Futura", 45)
 
 
 def draw_text(text, font, text_col, x, y):
@@ -164,6 +177,10 @@ def reset_level():
     return data
 
 
+pygame.joystick.init()
+joysticks = [pygame.joystick.Joystick(x) for x in range(pygame.joystick.get_count())]
+
+
 class Soldier(pygame.sprite.Sprite):
     def __init__(self, char_type, x, y, scale, speed, ammo, grenades):
         pygame.sprite.Sprite.__init__(self)
@@ -185,9 +202,9 @@ class Soldier(pygame.sprite.Sprite):
         self.frame_index = 0
         self.action = 0
         self.update_time = pygame.time.get_ticks()
-        # ai specific variables
+        # ai  variables
         self.move_counter = 0
-        self.vision = pygame.Rect(0, 0, 200, 50)
+        self.vision = pygame.Rect(0, 0, 160, 50)
         self.idling = False
         self.idling_counter = 0
 
@@ -424,7 +441,7 @@ class World:
                         health_bar = HealthBar(10, 10, player.health, player.health)
                     elif tile == 16:  # create enemies
                         enemy = Soldier(
-                            "enemy", x * TILE_SIZE, y * TILE_SIZE, 1.5, 2, 20, 0
+                            "enemy", x * TILE_SIZE, y * TILE_SIZE, 1.5, 2, 20, 5
                         )
                         enemy_group.add(enemy)
                     elif tile == 17:  # create ammo box
@@ -512,7 +529,7 @@ class ItemBox(pygame.sprite.Sprite):
                 if player.health > player.max_health:
                     player.health = player.max_health
             elif self.item_type == "Ammo":
-                player.ammo += 18
+                player.ammo += 15
             elif self.item_type == "Grenade":
                 player.grenades += 5
             # delete the item box
@@ -633,7 +650,7 @@ class Grenade(pygame.sprite.Sprite):
                     abs(self.rect.centerx - enemy.rect.centerx) < TILE_SIZE * 2
                     and abs(self.rect.centery - enemy.rect.centery) < TILE_SIZE * 2
                 ):
-                    enemy.health -= 50
+                    enemy.health -= 100
 
 
 class Explosion(pygame.sprite.Sprite):
@@ -780,16 +797,19 @@ while run:
         # show player health
         health_bar.draw(player.health)
         # show ammo
-        draw_text("AMMO: ", font, WHITE, 10, 35)
+        draw_text("Ammo: ", font, WHITE, 10, 35)
         for x in range(player.ammo):
-            screen.blit(bullet_img, (90 + (x * 10), 40))
+            screen.blit(bullet_img, (122 + (x * 10), 45))
         # show grenades
-        draw_text("GRENADES: ", font, WHITE, 10, 60)
+        draw_text("Grenades: ", font, WHITE, 10, 60)
         for x in range(player.grenades):
-            screen.blit(grenade_img, (135 + (x * 15), 60))
+            screen.blit(grenade_img, (180 + (x * 15), 70))
+        draw_text(f"Level: {level}", font, WHITE, 1800, 20)
 
         player.update()
         player.draw()
+
+        screen.blit(xbox_img, (160 + (x*10), 45))
 
         for enemy in enemy_group:
             enemy.ai()
@@ -875,15 +895,59 @@ while run:
                                 world_data[x][y] = int(tile)
                     world = World()
                     player, health_bar = world.process_data(world_data)
-
     for event in pygame.event.get():
         # quit game
         if event.type == pygame.QUIT:
             run = False
+        # Joystick
+        if event.type == pygame.JOYBUTTONDOWN:
+            if event.button == 0 and player.alive:
+                player.jump = True
+                jump_fx.play()
+
+            if event.button == 1:
+                shoot = True
+
+            if event.button == 14:
+                moving_right = False
+
+            if event.button == 2:
+                grenade = True
+
+            if event.button == 7:
+                run = False
+
+        if event.type == pygame.JOYBUTTONUP:
+            print(event)
+
+            if event.button == 1:
+                shoot = False
+
+            if event.button == 2:
+                grenade = True
+                grenade_thrown = True
+            print(event)    
+
+        if event.type == pygame.JOYHATMOTION:
+            if event.value[0] == 1:
+                moving_right = True
+                moving_left = False
+            else:
+                moving_right = False
+                moving_left = True
+
+            if event.value[0] == 0:
+                moving_left = False
+                moving_right = False
+
         # keyboard presses
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_a:
                 moving_left = True
+            if event.key == pygame.K_LEFT:
+                moving_left = True
+            if event.key == pygame.K_RIGHT:
+                moving_right = True
             if event.key == pygame.K_d:
                 moving_right = True
             if event.key == pygame.K_SPACE:
@@ -893,11 +957,18 @@ while run:
             if event.key == pygame.K_w and player.alive:
                 player.jump = True
                 jump_fx.play()
+            if event.key == pygame.K_UP and player.alive:
+                player.jump = True
+                jump_fx.play()
             if event.key == pygame.K_ESCAPE:
                 run = False
 
         # keyboard button released
         if event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT:
+                moving_left = False
+            if event.key == pygame.K_RIGHT:
+                moving_right = False
             if event.key == pygame.K_a:
                 moving_left = False
             if event.key == pygame.K_d:
