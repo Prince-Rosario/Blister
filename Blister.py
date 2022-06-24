@@ -60,9 +60,6 @@ grenade_thrown = False
 
 
 # load music and sounds
-# pygame.mixer.music.load('audio/music2.mp3')
-# pygame.mixer.music.set_volume(0.3)
-# pygame.mixer.music.play(-1, 0.0, 5000)
 jump_fx = pygame.mixer.Sound("files/audio/jump.wav")
 jump_fx.set_volume(0.08)
 shot_fx = pygame.mixer.Sound("files/audio/shot.wav")
@@ -76,7 +73,7 @@ mixer.music.set_volume(0.20)
 mixer.music.play(-1)
 
 # icon
-icon_img = pygame.image.load('files/img/icon0.png')
+icon_img = pygame.image.load("files/img/icon0.png")
 pygame.display.set_icon(icon_img)
 # icon_img = pygame.image.load("files/img/")
 
@@ -86,7 +83,7 @@ start_img = pygame.image.load("files/img/start_btn.png").convert_alpha()
 exit_img = pygame.image.load("files/img/exit_btn.png").convert_alpha()
 restart_img = pygame.image.load("files/img/restart_btn.png").convert_alpha()
 
-xbox_img =pygame.image.load("files/img/promt/gdb-xbox-2.png").convert_alpha()
+xbox_img = pygame.image.load("files/img/promt/gdb-xbox-2.png").convert_alpha()
 # background
 pine1_img = pygame.image.load("files/img/background/pine1.png").convert_alpha()
 pine2_img = pygame.image.load("files/img/background/pine2.png").convert_alpha()
@@ -811,7 +808,7 @@ while run:
         player.update()
         player.draw()
 
-        screen.blit(xbox_img, (160 + (x*10), 45))
+        screen.blit(xbox_img, (160 + (x * 10), 45))
 
         for enemy in enemy_group:
             enemy.ai()
@@ -900,7 +897,7 @@ while run:
     for event in pygame.event.get():
         # quit game
         if event.type == pygame.QUIT:
-            run = False 
+            run = False
         # Joystick
         if event.type == pygame.JOYBUTTONDOWN:
             if event.button == 0 and player.alive:
@@ -928,7 +925,7 @@ while run:
             if event.button == 2:
                 grenade = True
                 grenade_thrown = True
-            print(event)    
+            print(event)
 
         if event.type == pygame.JOYHATMOTION:
             if event.value[0] == 1:
