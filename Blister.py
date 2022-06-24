@@ -76,6 +76,8 @@ mixer.music.set_volume(0.20)
 mixer.music.play(-1)
 
 # icon
+icon_img = pygame.image.load('files/img/icon0.png')
+pygame.display.set_icon(icon_img)
 # icon_img = pygame.image.load("files/img/")
 
 # load images
