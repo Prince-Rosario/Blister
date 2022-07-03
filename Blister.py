@@ -1,7 +1,6 @@
 from cgitb import text
 from shutil import move
-from turtle import width
-from unittest import TestResult
+from tkinter import Menu
 from numpy import apply_along_axis
 import pygame
 from pygame import (
@@ -23,7 +22,6 @@ pygame.init()
 
 __author__ = "Prince Rosario"
 __email__ = "princerosario2003@gmail.com"
-__version__ = "1.0"
 
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
@@ -60,11 +58,8 @@ grenade_thrown = False
 
 
 # load music and sounds
-# pygame.mixer.music.load('audio/music2.mp3')
-# pygame.mixer.music.set_volume(0.3)
-# pygame.mixer.music.play(-1, 0.0, 5000)
-jump_fx = pygame.mixer.Sound("files/audio/jump.wav")
-jump_fx.set_volume(0.08)
+jump_fx = pygame.mixer.Sound("files/audio/jump1.wav")
+jump_fx.set_volume(0.05)
 shot_fx = pygame.mixer.Sound("files/audio/shot.wav")
 shot_fx.set_volume(0.08)
 grenade_fx = pygame.mixer.Sound("files/audio/grenade.wav")
@@ -76,14 +71,15 @@ mixer.music.set_volume(0.20)
 mixer.music.play(-1)
 
 # icon
-# icon_img = pygame.image.load("files/img/")
+icon_img = pygame.image.load('files/img/icon0.png')
+pygame.display.set_icon(icon_img)
 
 # load images
 # button images
 start_img = pygame.image.load("files/img/start_btn.png").convert_alpha()
 exit_img = pygame.image.load("files/img/exit_btn.png").convert_alpha()
 restart_img = pygame.image.load("files/img/restart_btn.png").convert_alpha()
-
+menu_img = pygame.image.load("files/img/menu.png").convert_alpha()
 xbox_img =pygame.image.load("files/img/promt/gdb-xbox-2.png").convert_alpha()
 # background
 pine1_img = pygame.image.load("files/img/background/pine1.png").convert_alpha()
@@ -116,7 +112,7 @@ item_boxes = {
 
 
 # define colours
-BG = (173, 216, 230)
+BG = (173, 215, 230)
 RED = (255, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
@@ -782,7 +778,7 @@ while run:
 
     if start_game == False:
         # draw menu
-        screen.fill(BG)
+        screen.blit(menu_img, (0,0))
         # add buttons
         if start_button.draw(screen):
             start_game = True
@@ -898,7 +894,7 @@ while run:
     for event in pygame.event.get():
         # quit game
         if event.type == pygame.QUIT:
-            run = False 
+            run = False
         # Joystick
         if event.type == pygame.JOYBUTTONDOWN:
             if event.button == 0 and player.alive:
@@ -926,7 +922,7 @@ while run:
             if event.button == 2:
                 grenade = True
                 grenade_thrown = True
-            print(event)    
+            print(event)
 
         if event.type == pygame.JOYHATMOTION:
             if event.value[0] == 1:
