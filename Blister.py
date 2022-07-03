@@ -71,7 +71,7 @@ mixer.music.set_volume(0.20)
 mixer.music.play(-1)
 
 # icon
-icon_img = pygame.image.load('files/img/icon0.png')
+icon_img = pygame.image.load("files/img/icon0.png")
 pygame.display.set_icon(icon_img)
 
 # load images
@@ -80,7 +80,7 @@ start_img = pygame.image.load("files/img/start_btn.png").convert_alpha()
 exit_img = pygame.image.load("files/img/exit_btn.png").convert_alpha()
 restart_img = pygame.image.load("files/img/restart_btn.png").convert_alpha()
 menu_img = pygame.image.load("files/img/menu.png").convert_alpha()
-xbox_img =pygame.image.load("files/img/promt/gdb-xbox-2.png").convert_alpha()
+promt = pygame.image.load("files/img/promt/controls.png").convert_alpha()
 # background
 pine1_img = pygame.image.load("files/img/background/pine1.png").convert_alpha()
 pine2_img = pygame.image.load("files/img/background/pine2.png").convert_alpha()
@@ -120,7 +120,7 @@ BLACK = (0, 0, 0)
 PINK = (235, 65, 54)
 
 # define font
-font = pygame.font.SysFont("Futura", 45)
+font = pygame.font.Font("dotty.ttf", 45)
 
 
 def draw_text(text, font, text_col, x, y):
@@ -778,7 +778,7 @@ while run:
 
     if start_game == False:
         # draw menu
-        screen.blit(menu_img, (0,0))
+        screen.blit(menu_img, (0, 0))
         # add buttons
         if start_button.draw(screen):
             start_game = True
@@ -805,7 +805,7 @@ while run:
         player.update()
         player.draw()
 
-        screen.blit(xbox_img, (160 + (x*10), 45))
+        screen.blit(promt, (1080 + (x * 7), -200))
 
         for enemy in enemy_group:
             enemy.ai()
