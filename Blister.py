@@ -40,7 +40,7 @@ SCROLL_THRESH = 400
 ROWS = 16
 COLS = 150
 TILE_SIZE = SCREEN_HEIGHT // ROWS
-TILE_TYPES = 21
+TILE_TYPES = 24
 MAX_LEVELS = 3
 screen_scroll = 0
 bg_scroll = 0
@@ -80,6 +80,7 @@ start_img = pygame.image.load("files/img/start_btn.png").convert_alpha()
 exit_img = pygame.image.load("files/img/exit_btn.png").convert_alpha()
 restart_img = pygame.image.load("files/img/restart_btn.png").convert_alpha()
 menu_img = pygame.image.load("files/img/menu.png").convert_alpha()
+exit_menu = pygame.image.load("files/img/exit_menu.png").convert_alpha()
 promt = pygame.image.load("files/img/promt/controls.png").convert_alpha()
 # background
 pine1_img = pygame.image.load("files/img/background/pine1.png").convert_alpha()
@@ -120,7 +121,7 @@ BLACK = (0, 0, 0)
 PINK = (235, 65, 54)
 
 # define font
-font = pygame.font.Font("dotty.ttf", 45)
+font = pygame.font.Font("files/dotty.ttf", 45)
 
 
 def draw_text(text, font, text_col, x, y):
@@ -793,19 +794,19 @@ while run:
         # show player health
         health_bar.draw(player.health)
         # show ammo
-        draw_text("Ammo: ", font, WHITE, 10, 35)
+        draw_text("AMMO: ", font, BLACK, 10, 35)
         for x in range(player.ammo):
             screen.blit(bullet_img, (122 + (x * 10), 45))
         # show grenades
-        draw_text("Grenades: ", font, WHITE, 10, 60)
+        draw_text("GRENADES: ", font, BLACK, 10, 60)
         for x in range(player.grenades):
             screen.blit(grenade_img, (180 + (x * 15), 70))
-        draw_text(f"Level: {level}", font, WHITE, 1800, 20)
+        draw_text(f"LEVEL: {level}", font, BLACK, 1800, 20)
 
         player.update()
         player.draw()
 
-        screen.blit(promt, (1080 + (x * 7), -200))
+        screen.blit(promt, (1080 + (x * 1), -200))
 
         for enemy in enemy_group:
             enemy.ai()
@@ -976,7 +977,9 @@ while run:
                 grenade_thrown = False
 
     if level > MAX_LEVELS:
-        break
+        screen.blit(exit_menu, (0, 0))
+        if exit_button.draw(screen):
+            run = False
 
     pygame.display.update()
 
