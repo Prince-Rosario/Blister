@@ -6,8 +6,12 @@ All the assets are mainly from https://itch.io/game-assets.
 
 **Added Controller Support**
 
+**download Blister.rar from releases and extract it to play**
+
 
 ![image](https://user-images.githubusercontent.com/82267672/177063617-1a6790fc-1800-4e50-803b-d09075aa18f8.png)
+
+
 
 
 
