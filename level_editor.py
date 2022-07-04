@@ -24,7 +24,7 @@ pygame.display.set_caption("Level Editor")
 ROWS = 16
 MAX_COLS = 150
 TILE_SIZE = SCREEN_HEIGHT // ROWS
-TILE_TYPES = 21
+TILE_TYPES = 24
 level = 0
 current_tile = 0
 scroll_left = False
@@ -53,6 +53,7 @@ load_img = pygame.image.load("files/img/load.png").convert_alpha()
 GREEN = (144, 201, 120)
 WHITE = (255, 255, 255)
 RED = (200, 25, 25)
+BLUE = (46, 43, 86)
 
 # define font
 font = pygame.font.SysFont("Futura", 30)
@@ -76,7 +77,7 @@ def draw_text(text, font, text_col, x, y):
 
 # create function for drawing background
 def draw_bg():
-    screen.fill(GREEN)
+    screen.fill(BLUE)
     width = sky_img.get_width()
     for x in range(4):
         screen.blit(sky_img, ((x * width) - scroll * 0.5, 0))
