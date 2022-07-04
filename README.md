@@ -23,8 +23,12 @@ A Side Scrolling Shooter Made With Python using Pygame module.
 
 
 credits:
-assests - https://itch.io/game-assets.
+assests - https://itch.io/game-assets,
+
+
 resources- https://www.pygame.org/docs/ , https://eylearning.udemy.com/course/exploring-game-mechanics-with-python-and-pygame/
+
+
 thanks to https://github.com/cbbn00 for brainstorming 😄	
 
 Note: New Levels with more features are still under development also included the level creator feel free to create your own levels ;) 
